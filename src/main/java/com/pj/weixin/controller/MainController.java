@@ -3,7 +3,11 @@ package com.pj.weixin.controller;
 import com.pj.weixin.bean.ReplyTextMessage;
 import com.pj.weixin.service.TextMessageService;
 import com.pj.weixin.util.CheckUtil;
+import com.pj.weixin.util.MenuUtil;
 import com.pj.weixin.util.MessageUtil;
+import com.pj.weixin.util.TokenUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,10 +20,17 @@ import java.util.Map;
 
 @RestController
 @RequestMapping
-public class WeiXinController {
+public class MainController {
+    @Autowired
+    private CheckUtil checkUtil;
+    @Autowired
+    private MenuUtil menuUtil;
+    @Autowired
+    private TokenUtil tokenUtil;
     @Autowired
     private TextMessageService textMessageService;
 
+    public static final Logger logger = LoggerFactory.getLogger(MainController.class);
     /**
      * 验证
      * @param signature
@@ -31,7 +42,7 @@ public class WeiXinController {
     @GetMapping("/wx")
     public String checkSignature(String signature, String timestamp,
                                  String nonce, String echostr) {
-        if (CheckUtil.checkSignature(signature, timestamp, nonce)) {
+        if (checkUtil.checkSignature(signature, timestamp, nonce)) {
             return echostr;
         } else {
             return "";
@@ -56,7 +67,6 @@ public class WeiXinController {
             }else{
                 ReplyTextMessage returnMessage = textMessageService.getReturnMessage(map);
                 result = MessageUtil.ObjectToXml(returnMessage);
-                System.out.println("正确");
             }
         }
         return result;

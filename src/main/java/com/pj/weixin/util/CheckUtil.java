@@ -1,15 +1,19 @@
 package com.pj.weixin.util;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
+@Component
 public class CheckUtil {
-    public static final String TOKEN = "dhlpj";
+    @Value("${weixin.app.info.volidateToken}")
+    public String validateToken;
 
-    public static boolean checkSignature(String signature,String timestamp, String nonce){
+    public boolean checkSignature(String signature,String timestamp, String nonce){
         //1、排序
-        String[] arr = {TOKEN,timestamp,nonce};
+        String[] arr = {validateToken,timestamp,nonce};
         Arrays.sort(arr);
         //2、拼接字符串
         StringBuilder sb = new StringBuilder();

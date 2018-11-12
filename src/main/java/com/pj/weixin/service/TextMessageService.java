@@ -1,6 +1,8 @@
 package com.pj.weixin.service;
 
 import com.pj.weixin.bean.ReplyTextMessage;
+import com.pj.weixin.util.TraslateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -12,6 +14,12 @@ import java.util.Map;
  */
 @Service
 public class TextMessageService {
+    @Autowired
+    private TraslateUtil traslateUtil;
+
+    private final String from = "auto";
+    private final String to = "en";
+
     public ReplyTextMessage getReturnMessage(Map<String,String> map){
         ReplyTextMessage textMessage = new ReplyTextMessage();
         String ToUserName = map.get("ToUserName");
@@ -21,8 +29,8 @@ public class TextMessageService {
         textMessage.setFromUserName(ToUserName);
         textMessage.setToUserName(FromUserName);
         textMessage.setMsgType(MsgType);
-        textMessage.setContent("您输入的是："+Content);
-        System.out.println(Content);
+        String translateResult = traslateUtil.getTransResult(Content, from, to);
+        textMessage.setContent(translateResult);
         textMessage.setCreateTime(new Date().getTime());
         return textMessage;
     }

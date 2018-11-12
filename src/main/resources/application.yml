@@ -14,6 +14,15 @@ spring:
 weixin:
   app:
     info:
+      volidateToken: dhlpj #这个是验证token
       appid: wx131cd9cc10cc040e
       secret: 67bf65e4732f02ad6a8b56b5fbec57b3
       accessTokenUrl: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx131cd9cc10cc040e&secret=67bf65e4732f02ad6a8b56b5fbec57b3
+      tokenNameInRedis: access_token #保存在redis中的通信token的key值
+    menu:
+      urlWithoutAccessToken: https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN
+baidu:
+  traslate:
+    baseUrl: http://api.fanyi.baidu.com/api/trans/vip/translate
+    appid: 20181112000233175
+    securityKey: LQqtyUfuS0f6gxuZ96QH
